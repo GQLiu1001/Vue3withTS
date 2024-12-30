@@ -1,9 +1,21 @@
-<template>
+<script >
+  import Person from "@/components/Person.vue";
+  export default {
+    name: 'App',
+    //注册组件
+    components: {Person}
+  }
 
-</template>
-<script>
+
 
 </script>
-<style>
 
+
+<template>
+    <Person />
+</template>
+
+
+
+<style>
 </style>
