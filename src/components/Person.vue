@@ -1,35 +1,62 @@
 <script setup lang="ts">
-import {computed, reactive, ref, toRefs, watch, watchEffect} from "vue";
-import {type PersonInterface} from '@/types'
-//复习TS
-let personList:Array<PersonInterface> = [
-  {name:'里斯',age:100,id=1},
-  {name:'王五',age:90,id=2},
-  {name:'朝气',age:80,id=3},
-]
+import {computed, reactive, ref, toRefs, watch, watchEffect,defineProps} from "vue";
+import {type PersonInterface, type Persons} from '@/types'
+import Person from "@/components/Person.vue";
+import axios from "axios";
+//接受props不限制类型
+// defineProps(['list']);
+//接受props限制类型
+defineProps<{list:Persons}>();
+//接受props限制类型 限制必要性 增加默认值withDefaults
+// withDefaults(defineProps<{list?:Persons}>(),
+//     {list:[
+//         {name:'defa',age:30,id:0}
+//     ]})
+//hooks 命名规则 useDogs useOrders hooks文件夹
+/*let dogList = reactive(
+    [
+        'https://random.dog/b1e63fd1-1136-4aec-8b21-3d6e60d6134f.jpg'
+    ]
+)
+async function getDog(){
+  try{
+    let result = await axios.get("https://random.dog/woof.json")
+    console.log(result.data)
+    dogList.push(result.data.url)
+  }catch (err){
+    console.log(err)
+  }
+}*/
+//导入后解构 模块化hooks
+import useDogs from "@/hooks/useDogs.ts";
+const {dogList,getDog} = useDogs();
 </script>
 
 <template>
   <div class="person" >
-    <h1>姓名:{{p1.name}}</h1>
-    <h1>年龄:{{p1.age}}</h1>
-    <button @click="showDetail">详细信息</button>
-    <button @click="changeAge">增加年龄</button>
-    <button @click="changeName">改   名</button>
-    <button @click="reset">重置</button>
+    <ul>
+<!--   v-for="xxx in xxxx" xxx.xxxxx 后面加:key="xx"-->
+      <li v-for="l in list" :key="l.id">
+        {{l.name}}--{{l.age}}--{{l.id}}
+        </li>
+    </ul>
   </div>
-  <div class="person" >
-    <h1>姓名:{{name}}</h1>
-    <h1>年龄:{{age}}</h1>
-    <button @click="showDetail1">详细信息</button>
-    <button @click="changeAge1">增加年龄</button>
-    <button @click="changeName1">改   名</button>
-    <button @click="reset1">重置</button>
+  <div class="dog" >
+    <img v-for="(dog,index) in dogList" :src="dog" :key="index"
+         style="height: 300px">
+    <hr>
+    <button @click="getDog">增加小狗</button>
   </div>
 </template>
 
 <style scoped>
 .person{
+  text-align: center;
+  background-color: #0decec;
+  color: #784545;
+  border-radius: 10px;
+}
+.dog{
   text-align: center;
   background-color: #0decec;
   color: #784545;
