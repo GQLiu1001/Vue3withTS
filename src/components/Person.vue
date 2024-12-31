@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {computed, reactive, ref, toRefs, watch, watchEffect,defineProps} from "vue";
+import {computed, reactive, ref, toRefs, watch, watchEffect} from "vue";
 import {type PersonInterface, type Persons} from '@/types'
 import Person from "@/components/Person.vue";
 import axios from "axios";
@@ -43,7 +43,7 @@ const {dogList,getDog} = useDogs();
   </div>
   <div class="dog" >
     <img v-for="(dog,index) in dogList" :src="dog" :key="index"
-         style="height: 300px">
+         style="height: 300px" alt="error">
     <hr>
     <button @click="getDog">增加小狗</button>
   </div>
